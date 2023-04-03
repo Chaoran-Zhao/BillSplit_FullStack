@@ -4,13 +4,15 @@
 <ul class="list-group list-group-flush" id="notes">
   {% for note in user.notes %}
   <li class="list-group-item">
-    {{ note.data }}
+    {{ note.data}}
+    <button  type="button" onClick="getEvent({{ note.id }})" > <span aria-hidden="true">View</span> </button>
     <button type="button" class="close" onClick="deleteNote({{ note.id }})">
       <span aria-hidden="true">&times;</span>
     </button>
   </li>
   {% endfor %}
 </ul>
+<h1 align="center">Create New Event</h1>
 <form method="POST">
   <!-- <textarea name="note" id="note" class="form-control"></textarea> -->
   <label for="event">Event Name</label>
@@ -19,6 +21,14 @@
       class="form-control"
       name="note" id="note" 
       placeholder="Enter Event Name"
+    />
+  <br />
+  <label for="event">Participater</label>
+    <input
+      type="text"
+      class="form-control"
+      name="users" id="users" 
+      placeholder="Enter Participater Names, (Separete by ; for multiple participater)"
     />
   <br />
   <div align="center">

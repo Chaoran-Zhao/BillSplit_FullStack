@@ -17,10 +17,11 @@ class Note(db.Model):
     data = db.Column(db.String(10000))
     date = db.Column(db.DateTime(timezone=True), default=func.now())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    users = db.Column(db.String(50))
     transactions = db.relationship('Transaction')
-
 
 class Transaction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     note_id = db.Column(db.Integer, db.ForeignKey('note.id'))
+    amount = db.Column(db.Numeric)
     user_name = db.Column(db.String(50))

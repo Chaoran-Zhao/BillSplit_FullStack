@@ -89,6 +89,32 @@
           });
         }
       </script>
-  {% endblock %}
+    {% endblock %}
+    {% block javascript2 %}
+        <script type="text/javascript">
+          function getEvent(note) {
+            fetch(`/event/${note}`, {
+              method: "GET",
+              // body: JSON.stringify({ note: note }),
+            }).then((_res) => {
+              window.location.href = `/event/${note}`;
+            });
+          }
+        </script>
+    {% endblock %}
+    {% block javascript3 %}
+      <script type="text/javascript">
+        function addTrans(noteId, amount, users) {
+          console.log(noteId, amount, users)
+          const allusers = users.split(';')
+          allusers.forEach(element => {
+            fetch("/add-trans", {
+              method: "POST",
+              body: JSON.stringify({ noteId: noteId, amount: amount/allusers.length, user: element }),
+            })
+          });         
+        }
+      </script>
+    {% endblock %}
 </body>
 </html>

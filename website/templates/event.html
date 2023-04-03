@@ -1,0 +1,59 @@
+{% extends "base.html" %} {% block title %}Event{% endblock %} 
+{% block content %}
+
+<h1 align="center">{{event.data}}</h1>
+<h2>Total Cost: $ {{ cost | round(1) }}</h2>
+<h2>Participater: {{event.users}}</h2>
+<ul class="list-group list-group-flush" id="notes">
+  {% for note in event.users.split(';') %}
+  <li class="list-group-item">
+    <span>{{ note}}</span> 
+    <span style="display: flex; justify-content: flex-end;">
+      $ {{ result_dict[note]}}
+    </span>
+  </li>
+  {% endfor %}
+</ul>
+<h3 align="center">Add New Transaction</h3>
+<form action="/add-trans" method="POST">
+  <div class="form-group">
+    <label for="eventid">Event Id</label>
+    <input
+      type="number"
+      class="form-control"
+      id="event"
+      name="event"
+      value="{{event.id}}"
+      readonly
+    />
+    <label for="amount">Amount</label>
+    <input
+      type="numeric"
+      class="form-control"
+      id="transaction"
+      name="transaction"
+      placeholder="Enter amount $"
+    />
+  </div>
+  <label for="email">Participater</label>
+
+  <input
+      type="text"
+      class="form-control"
+      id="users"
+      name="users"
+      value="{{event.users}}"
+    />
+  <label for="email">Payer</label>
+  <input
+    type="text"
+    class="form-control"
+    id="payer"
+    name="payer"
+    placeholder="Enter the name for the payer"
+  />
+  <br />
+  <br />
+  <button class="btn btn-primary" type="submit">Add</button>   
+</form>
+{% endblock %}
