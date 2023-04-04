@@ -16,6 +16,79 @@
       crossorigin="anonymous"
     />
     <title>{% block title %}Home{% endblock %}</title>
+    <style>
+      table {
+        margin: 20px auto;
+        border-collapse: collapse;
+        width: 80%;
+        background-color: #fff;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      }
+      th, td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+      th {
+        background-color: #002147;
+        color: #fff;
+      }
+      tbody tr:hover {
+        background-color: #f5f5f5;
+      }
+      tfoot td {
+        text-align: right;
+        font-weight: bold;
+        border-top: 1px solid #ddd;
+        padding-top: 10px;
+      }
+      select {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin-bottom: 20px;
+        box-sizing: border-box;
+      }
+      form {
+        margin: 20px auto;
+        background-color: #fff;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+      }
+      ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      li {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 15px;
+        background-color: #fff;
+        border-bottom: 1px solid #ddd;
+      }
+      li:hover {
+        background-color: #f2f2f2;
+      }
+      li span:first-child {
+        flex: 1;
+        margin-right: 10px;
+      }
+      button {
+        background-color: #002147;
+        color: #fff;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      button:hover {
+        background-color: #3b5998;
+      }
+    </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -103,18 +176,17 @@
         </script>
     {% endblock %}
     {% block javascript3 %}
-      <script type="text/javascript">
-        function addTrans(noteId, amount, users) {
-          console.log(noteId, amount, users)
-          const allusers = users.split(';')
-          allusers.forEach(element => {
-            fetch("/add-trans", {
-              method: "POST",
-              body: JSON.stringify({ noteId: noteId, amount: amount/allusers.length, user: element }),
-            })
-          });         
-        }
-      </script>
+        <script type="text/javascript">
+          function getDetail(note,name) {
+            fetch(`/detail/${note}/${name}`, {
+              method: "GET",
+              // body: JSON.stringify({ note: note }),
+            }).then((_res) => {
+              window.location.href = `/detail/${note}/${name}`;
+            });
+          }
+        </script>
     {% endblock %}
+    
 </body>
 </html>

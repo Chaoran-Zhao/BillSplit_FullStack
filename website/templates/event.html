@@ -3,13 +3,19 @@
 
 <h1 align="center">{{event.data}}</h1>
 <h2>Total Cost: $ {{ cost | round(1) }}</h2>
-<h2>Participater: {{event.users}}</h2>
+<h2>Participants: {{event.users}}</h2>
 <ul class="list-group list-group-flush" id="notes">
   {% for note in event.users.split(';') %}
   <li class="list-group-item">
     <span>{{ note}}</span> 
+    <button  type="button" onClick="getDetail('{{ event.id }}', '{{ note }}')"> <span aria-hidden="true">View</span> </button>
     <span style="display: flex; justify-content: flex-end;">
-      $ {{ result_dict[note]}}
+      $ 
+      {% if result_dict[note] is defined %}
+          {{ result_dict[note] }}
+      {% else %}
+          0
+      {% endif %}
     </span>
   </li>
   {% endfor %}
@@ -26,6 +32,15 @@
       value="{{event.id}}"
       readonly
     />
+    <label for="amount"> Name</label>
+    <input
+      type="text"
+      class="form-control"  
+      id="transactionName"
+      name="transactionName"
+      placeholder="Enter name of the transaction"
+      required
+    />
     <label for="amount">Amount</label>
     <input
       type="numeric"
@@ -33,9 +48,10 @@
       id="transaction"
       name="transaction"
       placeholder="Enter amount $"
+      required
     />
   </div>
-  <label for="email">Participater</label>
+  <label for="email">Participants</label>
 
   <input
       type="text"
@@ -43,15 +59,43 @@
       id="users"
       name="users"
       value="{{event.users}}"
+      required
     />
-  <label for="email">Payer</label>
+  <!-- <label for="email">Payer</label>
   <input
     type="text"
     class="form-control"
     id="payer"
     name="payer"
     placeholder="Enter the name for the payer"
-  />
+  /> -->
+  <br />
+  <label for="dropdown">Select a Payer:</label>
+  <select id="dropdown" name="dropdown">
+    {% for option in event.users.split(';') %}
+      <option value="{{ option }}">{{ option }}</option>
+    {% endfor %}
+  </select>
+
+  <script>
+    // Get references to the input field and drop-down menu
+    const inputField = document.getElementById('users');
+    const dropdown = document.getElementById('dropdown');
+    
+    // Listen for changes to the input field
+    inputField.addEventListener('input', (event) => {
+      const options = event.target.value.split(';');
+      // Clear existing options
+      dropdown.innerHTML = '';
+      // Add new options
+      options.forEach((option) => {
+        const optionElement = document.createElement('option');
+        optionElement.value = option;
+        optionElement.text = option;
+        dropdown.appendChild(optionElement);
+      });
+    });
+  </script>
   <br />
   <br />
   <button class="btn btn-primary" type="submit">Add</button>   

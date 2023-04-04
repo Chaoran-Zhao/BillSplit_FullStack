@@ -22,6 +22,8 @@ class Note(db.Model):
 
 class Transaction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50))
     note_id = db.Column(db.Integer, db.ForeignKey('note.id'))
     amount = db.Column(db.Numeric)
     user_name = db.Column(db.String(50))
+    time = db.Column(db.DateTime(timezone=True), default=func.now())

@@ -14,6 +14,12 @@ def home():
     if request.method == 'POST': 
         note = request.form.get('note')#Gets the note from the HTML 
         users = request.form.get('users')#Gets the note from the HTML 
+        # remove any potential trailing space of the input
+
+        if users.endswith(' '):
+            print('removing trailing space')
+            users = users.rstrip()
+
         if len(note) < 1:
             flash('Note is too short!', category='error') 
         else:
@@ -38,6 +44,14 @@ def event(eventid):
     if request.method == 'POST': 
         print('posting')
         return render_template("event.html", user=current_user,event=note)
+
+@views.route('/detail/<eventid>/<username>',methods = ['GET', 'POST'])
+@login_required
+def detail(eventid,username):
+    if request.method == 'GET': 
+        result = Transaction.query.filter_by(note_id=eventid, user_name=username).all()       
+        result_dict = check_balance(eventid)
+    return render_template("detail.html",user=current_user, username = username, result = result,total = result_dict[username])
 
 
 def check_balance(eventid):
@@ -75,15 +89,16 @@ def add_trans():
     noteId  = request.form.get('event')
     trans = request.form.get('transaction')
     user = request.form.get('users')
-    payer = request.form.get('payer')
+    payer = request.form['dropdown']
+    name = request.form.get('transactionName')
     alluser = user.split(';')
     for i in alluser:
         identify_user(i, noteId)
-        new_trans= Transaction(note_id = noteId, amount = float(trans)/len(alluser), user_name = i)
+        new_trans= Transaction(note_id = noteId, amount = float(trans)/len(alluser), user_name = i, name = name)
         db.session.add(new_trans)
         db.session.commit()
     
-    new_trans2= Transaction(note_id = noteId, amount = -float(trans), user_name = payer)
+    new_trans2= Transaction(note_id = noteId, amount = -float(trans), user_name = payer,name = name)
     db.session.add(new_trans2)
     db.session.commit()
     return redirect(url_for('views.home'))
