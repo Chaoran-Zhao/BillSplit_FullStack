@@ -12,7 +12,6 @@ def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'dsahfkadfakjdf askdfha'
     # app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{os.path.join(os.getcwd(),DB_NAME)}'
-    # postgres://billsplitweb_user:pszUCVD2Sgosrw4sigSVcOP0tKltmGZX@dpg-cglp0to7oslael4p6r60-a.singapore-postgres.render.com/billsplitweb
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URI")
     db.init_app(app)
 
